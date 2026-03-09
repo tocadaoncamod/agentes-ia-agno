@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🤖 AgenteMaestro — Painel de Controle</title>
+  <meta name="description" content="Painel de controle premium para comunicação com agentes de IA">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Animated Background -->
+  <div class="bg-gradient"></div>
+  <div class="bg-grid"></div>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo">
+          <span class="logo-icon">🤖</span>
+          <div>
+            <h1 class="logo-text">AgenteMaestro</h1>
+            <p class="logo-sub">Painel de Controle</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <h3 class="section-title">Agentes</h3>
+        <div class="agent-list" id="agent-list">
+          <button class="agent-item active" data-agent="maestro" data-port="8000">
+            <span class="agent-icon">🎯</span>
+            <div class="agent-info">
+              <span class="agent-name">AgenteMaestro</span>
+              <span class="agent-desc">Agente central autônomo</span>
+            </div>
+            <span class="agent-status online" id="status-maestro"></span>
+          </button>
+          <button class="agent-item" data-agent="pesquisador" data-port="8000" data-module="11_researcher">
+            <span class="agent-icon">🔍</span>
+            <div class="agent-info">
+              <span class="agent-name">Pesquisador</span>
+              <span class="agent-desc">Busca e valida informações</span>
+            </div>
+            <span class="agent-status" id="status-pesquisador"></span>
+          </button>
+          <button class="agent-item" data-agent="analista" data-port="8000" data-module="12_analista">
+            <span class="agent-icon">📈</span>
+            <div class="agent-info">
+              <span class="agent-name">Analista Financeiro</span>
+              <span class="agent-desc">Ações e mercado</span>
+            </div>
+            <span class="agent-status" id="status-analista"></span>
+          </button>
+          <button class="agent-item" data-agent="multifuncoes" data-port="8001" data-module="13_own_tools">
+            <span class="agent-icon">🛠️</span>
+            <div class="agent-info">
+              <span class="agent-name">Multifunções</span>
+              <span class="agent-desc">Conversões e cálculos</span>
+            </div>
+            <span class="agent-status" id="status-multifuncoes"></span>
+          </button>
+          <button class="agent-item" data-agent="pdf" data-port="8002" data-module="21_pdf_agent">
+            <span class="agent-icon">📄</span>
+            <div class="agent-info">
+              <span class="agent-name">Agente de PDF</span>
+              <span class="agent-desc">Análise de documentos</span>
+            </div>
+            <span class="agent-status" id="status-pdf"></span>
+          </button>
+          <button class="agent-item" data-agent="memoria" data-port="8003" data-module="31_memory">
+            <span class="agent-icon">🧠</span>
+            <div class="agent-info">
+              <span class="agent-name">Memória</span>
+              <span class="agent-desc">Lembra entre conversas</span>
+            </div>
+            <span class="agent-status" id="status-memoria"></span>
+          </button>
+          <button class="agent-item" data-agent="teams" data-port="8004" data-module="41_teams">
+            <span class="agent-icon">🌍</span>
+            <div class="agent-info">
+              <span class="agent-name">Time Multilingual</span>
+              <span class="agent-desc">PT/EN/ES/FR</span>
+            </div>
+            <span class="agent-status" id="status-teams"></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <h3 class="section-title">Skills</h3>
+        <div class="skills-grid" id="skills-grid">
+          <div class="skill-badge" title="Pesquisa Web">🔎</div>
+          <div class="skill-badge" title="Análise Financeira">💰</div>
+          <div class="skill-badge" title="Análise PDF">📑</div>
+          <div class="skill-badge" title="Criador de Agentes">🏭</div>
+          <div class="skill-badge" title="Python Executor">🐍</div>
+          <div class="skill-badge" title="Conversão de Dados">🔄</div>
+          <div class="skill-badge" title="Memória">💾</div>
+          <div class="skill-badge" title="Escrita Profissional">✍️</div>
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <button class="btn-clear" onclick="clearChat()" title="Limpar conversa">
+          🗑️ Limpar Chat
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Top Bar -->
+      <header class="topbar">
+        <button class="btn-menu" id="btn-menu" onclick="toggleSidebar()">☰</button>
+        <div class="topbar-info">
+          <h2 id="current-agent-name">🎯 AgenteMaestro</h2>
+          <span class="topbar-status" id="topbar-status">Verificando conexão...</span>
+        </div>
+        <div class="topbar-actions">
+          <span class="connection-badge" id="connection-badge">
+            <span class="pulse-dot"></span>
+            <span id="connection-text">Conectando</span>
+          </span>
+        </div>
+      </header>
+
+      <!-- Chat Area -->
+      <div class="chat-container" id="chat-container">
+        <div class="chat-messages" id="chat-messages">
+          <!-- Welcome Message -->
+          <div class="welcome-screen" id="welcome-screen">
+            <div class="welcome-icon">🤖</div>
+            <h2 class="welcome-title">Bem-vindo ao AgenteMaestro</h2>
+            <p class="welcome-text">Selecione um agente na barra lateral e comece a conversar. Cada agente tem habilidades especializadas para te ajudar.</p>
+            <div class="quick-actions">
+              <button class="quick-btn" onclick="sendQuick('Olá! Quem é você e o que sabe fazer?')">
+                👋 Apresentação
+              </button>
+              <button class="quick-btn" onclick="sendQuick('Quais são suas skills instaladas?')">
+                🛠️ Ver Skills
+              </button>
+              <button class="quick-btn" onclick="sendQuick('Qual a cotação atual da Apple (AAPL)?')">
+                📈 Cotações
+              </button>
+              <button class="quick-btn" onclick="sendQuick('Pesquise as últimas notícias sobre IA')">
+                🔍 Pesquisar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div class="input-area">
+        <div class="input-wrapper">
+          <textarea
+            id="msg-input"
+            placeholder="Digite sua mensagem..."
+            rows="1"
+            autofocus
+          ></textarea>
+          <button class="btn-send" id="btn-send" onclick="sendMessage()" title="Enviar (Enter)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"/>
+            </svg>
+          </button>
+        </div>
+        <p class="input-hint">
+          <kbd>Enter</kbd> para enviar · <kbd>Shift+Enter</kbd> para nova linha · Agente: <strong id="hint-agent">AgenteMaestro</strong>
+        </p>
+      </div>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

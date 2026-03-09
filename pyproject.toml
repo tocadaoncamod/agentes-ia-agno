@@ -1,0 +1,20 @@
+[project]
+name = "curso-agno"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "agno>=1.6.3",
+    "chromadb>=1.0.13",
+    "duckduckgo-search>=7.0.0",
+    "fastapi>=0.115.13",
+    "groq>=0.28.0",
+    "openai>=1.88.0",
+    "pypdf>=5.6.0",
+    "python-dotenv>=1.1.0",
+    "sqlalchemy>=2.0.41",
+    "tavily-python>=0.7.7",
+    "uvicorn>=0.34.3",
+    "yfinance>=0.2.63",
+]
