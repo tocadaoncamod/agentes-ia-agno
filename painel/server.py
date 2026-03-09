@@ -48,10 +48,29 @@ os.makedirs("tmp", exist_ok=True)
 # CRIAR AGENTES
 # ============================================================
 
+# ============================================================
+# CONFIGURAÇÃO OPENROUTER
+# ============================================================
+OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+OPENROUTER_KEY = os.getenv("OPENROUTER_API_KEY")
+
+def get_model(model_id: str):
+    """Retorna um modelo configurado para OpenRouter"""
+    return OpenAIChat(
+        id=model_id,
+        api_key=OPENROUTER_KEY,
+        base_url=OPENROUTER_BASE_URL,
+        # OpenRouter exige headers específicos para identificação
+        extra_headers={
+            "HTTP-Referer": "https://agentes-ia-agno.vercel.app", 
+            "X-Title": "AgenteMaestro Portal"
+        }
+    )
+
 # Banco de memória compartilhado
 memory = Memory(
     db=SqliteMemoryDb(table_name="painel_memory", db_file="tmp/painel.db"),
-    model=OpenAIChat(id="gpt-4.1-mini"),
+    model=get_model("openai/gpt-4o-mini"),
 )
 
 def criar_storage(nome: str) -> SqliteStorage:
@@ -61,7 +80,7 @@ def criar_storage(nome: str) -> SqliteStorage:
 # 1. AgenteMaestro
 maestro = Agent(
     name="AgenteMaestro",
-    model=OpenAIChat(id="gpt-4.1-mini"),
+    model=get_model("openai/gpt-4o-mini"),
     tools=[DuckDuckGoTools(), YFinanceTools(stock_price=True, company_info=True, analyst_recommendations=True)],
     description="Agente central autônomo do projeto Toca da Onça.",
     instructions=[
@@ -82,7 +101,7 @@ maestro = Agent(
 # 2. Pesquisador
 pesquisador = Agent(
     name="Pesquisador",
-    model=Groq(id="llama-3.3-70b-versatile"),
+    model=get_model("google/gemini-2.0-flash-001"),
     tools=[DuckDuckGoTools()],
     description="Pesquisador que busca, valida e organiza informações.",
     instructions=[
@@ -100,7 +119,7 @@ pesquisador = Agent(
 # 3. Analista Financeiro
 analista = Agent(
     name="Analista Financeiro",
-    model=Groq(id="llama-3.3-70b-versatile"),
+    model=get_model("meta-llama/llama-3.3-70b-instruct"),
     tools=[
         YFinanceTools(stock_price=True, company_info=True, analyst_recommendations=True,
                       stock_fundamentals=True, key_financial_ratios=True),
@@ -122,7 +141,7 @@ analista = Agent(
 # 4. Multifunções
 multifuncoes = Agent(
     name="Multifunções",
-    model=OpenAIChat(id="gpt-4.1-mini"),
+    model=get_model("openai/gpt-4o-mini"),
     tools=[DuckDuckGoTools()],
     description="Agente versátil para conversões, cálculos e tarefas gerais.",
     instructions=[
@@ -140,7 +159,7 @@ multifuncoes = Agent(
 # 5. Agente PDF (sem knowledge base neste contexto, mas funcional)
 pdf_agent = Agent(
     name="Agente de PDF",
-    model=OpenAIChat(id="gpt-4.1-mini"),
+    model=get_model("openai/gpt-4o-mini"),
     tools=[DuckDuckGoTools()],
     description="Especialista em análise de documentos.",
     instructions=[
@@ -158,7 +177,7 @@ pdf_agent = Agent(
 # 6. Memória
 memoria = Agent(
     name="Memória",
-    model=OpenAIChat(id="gpt-4.1-mini"),
+    model=get_model("openai/gpt-4o-mini"),
     tools=[DuckDuckGoTools(), YFinanceTools(stock_price=True, company_info=True)],
     description="Assistente com memória persistente entre conversas.",
     instructions=[
@@ -179,7 +198,7 @@ memoria = Agent(
 # 7. Teams (agente multilingual simples)
 teams = Agent(
     name="Time Multilingual",
-    model=OpenAIChat(id="gpt-4.1-mini"),
+    model=get_model("openai/gpt-4o-mini"),
     tools=[DuckDuckGoTools()],
     description="Responde em 4 idiomas: PT, EN, ES, FR.",
     instructions=[

@@ -322,8 +322,26 @@ skills_instaladas = _get_skills_nomes()
 # AGENTE MAESTRO
 # ============================================================
 
+# ============================================================
+# CONFIGURAÇÃO OPENROUTER
+# ============================================================
+OPENROUTER_BASE_URL = "https://openrouter.ai/api/v1"
+OPENROUTER_KEY = os.getenv("OPENROUTER_API_KEY")
+
+def get_model(model_id: str):
+    """Retorna um modelo configurado para OpenRouter"""
+    return OpenAIChat(
+        id=model_id,
+        api_key=OPENROUTER_KEY,
+        base_url=OPENROUTER_BASE_URL,
+        extra_headers={
+            "HTTP-Referer": "https://agentes-ia-agno.vercel.app",
+            "X-Title": "AgenteMaestro Local"
+        }
+    )
+
 memory = Memory(
-    model=OpenAIChat(id="gpt-4.1-mini"),
+    model=get_model("openai/gpt-4o-mini"),
     db=SqliteMemoryDb(table_name="maestro_memory", db_file="tmp/agent.db"),
 )
 
@@ -331,7 +349,7 @@ storage = SqliteStorage(table_name="maestro_session", db_file="tmp/agent.db")
 
 maestro = Agent(
     name="AgenteMaestro",
-    model=OpenAIChat(id="gpt-4.1-mini"),
+    model=get_model("openai/gpt-4o-mini"),
     description=(
         "Sou o AgenteMaestro — agente central autônomo do projeto Toca da Onça. "
         "Tenho 17 skills instaladas, posso criar agentes especializados, "
