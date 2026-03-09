@@ -1,0 +1,11 @@
+agno
+fastapi
+uvicorn
+python-dotenv
+openai
+groq
+duckduckgo-search
+yfinance
+pydantic
+pydantic-settings
+uv
