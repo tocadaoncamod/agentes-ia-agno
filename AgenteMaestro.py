@@ -10,7 +10,6 @@ from agno.models.openai import OpenAIChat
 from agno.models.groq import Groq
 from agno.tools.tavily import TavilyTools
 from agno.tools.duckduckgo import DuckDuckGoTools
-from agno.tools.yfinance import YFinanceTools
 from agno.storage.sqlite import SqliteStorage
 from agno.memory.v2.memory import Memory
 from agno.memory.v2.db.sqlite import SqliteMemoryDb

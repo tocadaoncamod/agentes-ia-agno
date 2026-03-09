@@ -7,7 +7,7 @@
 const state = {
   currentAgent: 'maestro',
   currentAgentName: '🎯 AgenteMaestro',
-  apiBase: 'http://localhost:8080',
+  apiBase: window.location.origin,
   isLoading: false,
   sessionId: 'painel-' + Date.now(),
   conversations: {},

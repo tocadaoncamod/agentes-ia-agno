@@ -37,7 +37,6 @@ from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 from agno.models.groq import Groq
 from agno.tools.duckduckgo import DuckDuckGoTools
-from agno.tools.yfinance import YFinanceTools
 from agno.storage.sqlite import SqliteStorage
 from agno.memory.v2.memory import Memory
 from agno.memory.v2.db.sqlite import SqliteMemoryDb
@@ -81,7 +80,7 @@ def criar_storage(nome: str) -> SqliteStorage:
 maestro = Agent(
     name="AgenteMaestro",
     model=get_model("openai/gpt-4o-mini"),
-    tools=[DuckDuckGoTools(), YFinanceTools(stock_price=True, company_info=True, analyst_recommendations=True)],
+    tools=[DuckDuckGoTools()],
     description="Agente central autônomo do projeto Toca da Onça.",
     instructions=[
         "Você é o AgenteMaestro — agente autônomo e versátil.",
@@ -120,11 +119,7 @@ pesquisador = Agent(
 analista = Agent(
     name="Analista Financeiro",
     model=get_model("meta-llama/llama-3.3-70b-instruct"),
-    tools=[
-        YFinanceTools(stock_price=True, company_info=True, analyst_recommendations=True,
-                      stock_fundamentals=True, key_financial_ratios=True),
-        DuckDuckGoTools(),
-    ],
+    tools=[DuckDuckGoTools()],
     description="Analista financeiro especializado em ações e mercado.",
     instructions=[
         "Use SEMPRE tabelas para dados numéricos.",
@@ -178,7 +173,7 @@ pdf_agent = Agent(
 memoria = Agent(
     name="Memória",
     model=get_model("openai/gpt-4o-mini"),
-    tools=[DuckDuckGoTools(), YFinanceTools(stock_price=True, company_info=True)],
+    tools=[DuckDuckGoTools()],
     description="Assistente com memória persistente entre conversas.",
     instructions=[
         "Consulte SEMPRE sua memória antes de responder.",
