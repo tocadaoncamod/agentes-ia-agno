@@ -26,7 +26,7 @@ echo  ✅ Python encontrado!
 if not exist ".env" (
     if exist ".env.example" (
         copy ".env.example" ".env" > nul
-        echo  ⚠️  Arquivo .env criado! Adicione sua OPENAI_API_KEY
+        echo  ⚠️  Arquivo .env criado! Adicione sua OPENROUTER_API_KEY
         echo.
         echo  📋 Abrindo .env para voce configurar...
         notepad .env
@@ -35,22 +35,22 @@ if not exist ".env" (
         pause > nul
     ) else (
         echo  ❌ Arquivo .env nao encontrado!
-        echo     Crie um arquivo .env com: OPENAI_API_KEY=sk-...
+        echo     Crie um arquivo .env com: OPENROUTER_API_KEY=sk-or-v1-...
         pause
         exit /b 1
     )
 )
 echo  ✅ Arquivo .env encontrado!
 
-:: ─── Verificar OPENAI_API_KEY no .env ────────────────────────
-findstr /i "OPENAI_API_KEY=sk-proj" .env > nul 2>&1
+:: ─── Verificar OPENROUTER_API_KEY no .env ────────────────────
+findstr /i "OPENROUTER_API_KEY=sk-or-v1-" .env > nul 2>&1
 if errorlevel 1 (
-    findstr /i "OPENAI_API_KEY=sk-" .env > nul 2>&1
-    if errorlevel 1 (
-        echo  ⚠️  OPENAI_API_KEY pode nao estar configurada!
-        echo     Edite o arquivo .env e adicione sua chave.
-        echo     Continuando mesmo assim...
-    )
+    echo  ⚠️  OPENROUTER_API_KEY pode nao estar configurada!
+    echo     Edite o arquivo .env e adicione sua chave OpenRouter.
+    echo     Obtenha em: https://openrouter.ai/settings/keys
+    echo     Continuando mesmo assim...
+) else (
+    echo  ✅ OPENROUTER_API_KEY encontrada!
 )
 
 :: ─── Criar venv ou ativar existente ──────────────────────────

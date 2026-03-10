@@ -10,9 +10,9 @@ from agno.models.openai import OpenAIChat
 from agno.models.groq import Groq
 from agno.tools.tavily import TavilyTools
 from agno.tools.duckduckgo import DuckDuckGoTools
-from agno.storage.sqlite import SqliteStorage
-from agno.memory.v2.memory import Memory
-from agno.memory.v2.db.sqlite import SqliteMemoryDb
+from agno.db.sqlite import SqliteDb
+from agno.memory.v2 import Memory
+from agno.memory.db.sqlite import SqliteMemoryDb
 from agno.playground import Playground, serve_playground_app
 from dotenv import load_dotenv
 import subprocess, sys, os, tempfile, json
@@ -25,7 +25,7 @@ os.makedirs("agentes_criados", exist_ok=True)
 # ============================================================
 # DIRETÓRIO DAS SKILLS
 # ============================================================
-SKILLS_DIR = Path(__file__).parent / ".agent" / "skills"
+SKILLS_DIR = Path(__file__).parent / ".claude" / "skills"
 
 
 # ============================================================
@@ -344,7 +344,7 @@ memory = Memory(
     db=SqliteMemoryDb(table_name="maestro_memory", db_file="tmp/agent.db"),
 )
 
-storage = SqliteStorage(table_name="maestro_session", db_file="tmp/agent.db")
+storage = SqliteDb(table_name="maestro_session", db_file="tmp/agent.db")
 
 maestro = Agent(
     name="AgenteMaestro",
@@ -402,7 +402,6 @@ maestro = Agent(
         # Ferramentas externas
         DuckDuckGoTools(),
         TavilyTools(),
-        YFinanceTools(stock_price=True, company_info=True),
     ],
     memory=memory,
     enable_agentic_memory=True,

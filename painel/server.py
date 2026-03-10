@@ -37,9 +37,9 @@ from agno.agent import Agent
 from agno.models.openai import OpenAIChat
 from agno.models.groq import Groq
 from agno.tools.duckduckgo import DuckDuckGoTools
-from agno.storage.sqlite import SqliteStorage
-from agno.memory.v2.memory import Memory
-from agno.memory.v2.db.sqlite import SqliteMemoryDb
+from agno.db.sqlite import SqliteDb
+from agno.memory.v2 import Memory
+from agno.memory.db.sqlite import SqliteMemoryDb
 
 os.makedirs("tmp", exist_ok=True)
 
@@ -72,8 +72,8 @@ memory = Memory(
     model=get_model("openai/gpt-4o-mini"),
 )
 
-def criar_storage(nome: str) -> SqliteStorage:
-    return SqliteStorage(table_name=f"painel_{nome}", db_file="tmp/painel.db")
+def criar_storage(nome: str) -> SqliteDb:
+    return SqliteDb(table_name=f"painel_{nome}", db_file="tmp/painel.db")
 
 
 # 1. AgenteMaestro
